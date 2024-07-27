@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: poll-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poll-manager
+  template:
+    metadata:
+      labels:
+        app: poll-manager
+    spec:
+      containers:
+      - name: poll-manager
+        image: ghcr.io/sympoll/poll-management-service/sympoll-poll-service:latest
+        resources:
+        ports:
+        - containerPort: 8080
+        env:
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:postgresql://postgres:5432/mydatabase"
+          - name: SPRING_DATASOURCE_USERNAME
+            value: "postgres"
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: "1"
