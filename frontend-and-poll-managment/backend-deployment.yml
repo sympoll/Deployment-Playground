@@ -17,7 +17,7 @@ spec:
         image: ghcr.io/sympoll/poll-management-service/sympoll-poll-service:latest
         resources:
         ports:
-        - containerPort: 8080
+        - containerPort: 8081
         env:
           - name: SPRING_DATASOURCE_URL
             value: "jdbc:postgresql://postgres:5432/mydatabase"

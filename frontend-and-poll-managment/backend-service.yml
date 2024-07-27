@@ -3,7 +3,9 @@ kind: Service
 metadata:
   name: backend
 spec:
-  ports:
-    - port: 8080
   selector:
-    app: backend
+    app: poll-manager
+  ports:
+  - protocol: TCP
+    port: 8081
+  type: ClusterIP
