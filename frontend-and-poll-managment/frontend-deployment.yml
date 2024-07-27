@@ -17,4 +17,4 @@ spec:
         image: ghcr.io/sympoll/front-end-service/sympoll-front-end:latest
         resources:
         ports:
-        - containerPort: 80
+        - containerPort: 8080
