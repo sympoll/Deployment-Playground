@@ -28,7 +28,7 @@ for /f "tokens=*" %%i in ('kubectl get pods --no-headers ^| findstr /v "Running"
 )
 
 echo Port forwarding frontend service...
-start "" cmd /c "kubectl port-forward svc/frontend 8080:8080"
+start "" cmd /c "kubectl port-forward svc/frontend 8080:80"
 
 echo Deployment and port forwarding complete.
 endlocal
