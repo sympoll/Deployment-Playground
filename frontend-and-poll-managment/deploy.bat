@@ -19,6 +19,9 @@ kubectl apply -f postgres-deployment.yml
 echo Applying Postgres Service...
 kubectl apply -f postgres-service.yml
 
+echo Applying Console Deployment...
+kubectl apply -f console-deployment.yml
+
 echo Waiting for all pods to be in Running state...
 :wait_pods
 for /f "tokens=*" %%i in ('kubectl get pods --no-headers ^| findstr /v "Running"') do (
