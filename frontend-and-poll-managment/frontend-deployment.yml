@@ -13,8 +13,8 @@ spec:
         app: frontend
     spec:
       containers:
-      - name: frontend
-        image: ghcr.io/sympoll/front-end-service/sympoll-front-end-test:29.07.2024
-        resources:
-        ports:
-        - containerPort: 8080
+        - name: frontend
+          image: ghcr.io/sympoll/front-end-service/sympoll-front-end-test:latest
+          resources:
+          ports:
+            - containerPort: 8080
