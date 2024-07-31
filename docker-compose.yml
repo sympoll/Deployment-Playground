@@ -1,11 +1,19 @@
 version: "3.8"
 
 services:
+  api-gateway:
+      image: ghcr.io/sympoll/api-gateway-service/sympoll-api-gateway-service:latest
+      container_name: api-gateway
+      ports:
+        - "80:8081"
+      networks:
+        - sympoll-network
+
   poll-manager:
     image: ghcr.io/sympoll/poll-management-service/sympoll-poll-service:latest
     container_name: poll-manager
     ports:
-      - "8081:8081"
+      - "8082:8082"
     networks:
       - sympoll-network
 
@@ -13,7 +21,7 @@ services:
     image: ghcr.io/sympoll/front-end-service/sympoll-front-end-test:latest
     container_name: frontend
     ports:
-      - "80:8080"
+      - "8080:8080"
     depends_on:
       - poll-manager
     networks:

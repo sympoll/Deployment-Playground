@@ -16,10 +16,10 @@ spec:
             name: frontend
             port:
               number: 8080
-      - path: /api
+      - path: /api  # This matches all paths starting with "/api/"
         pathType: Prefix
         backend:
-          service:
+          service: 
             name: api-gateway
-            port:
+            port: 
               number: 8081
