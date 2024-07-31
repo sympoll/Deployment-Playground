@@ -42,5 +42,6 @@ done
 # Port forward the frontend service
 echo "Port forwarding frontend service..."
 kubectl port-forward svc/frontend 8080:80
+# kubectl port-forward svc/api-gateway 8081:8081
 
 echo "Deployment and port forwarding complete."
