@@ -1,19 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: console
+  name: api-gateway
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: console
+      app: api-gateway
   template:
     metadata:
       labels:
-        app: console
+        app: api-gateway
     spec:
       containers:
-      - name: console
-        image: quay.io/brochwer/console
+      - name: api-gateway
+        image: ghcr.io/sympoll/api-gateway-service/sympoll-api-gateway-service:latest
         resources:
           requests:
             memory: "256Mi"
@@ -22,4 +23,4 @@ spec:
             memory: "512Mi"
             cpu: "500m"
         ports:
-        - containerPort: 9999
+        - containerPort: 8081
