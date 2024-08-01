@@ -31,20 +31,20 @@ data:
     VALUES 
     ('a1e9d644-1fc3-4d6c-b2f1-9d8585e1d6c4', 'Best Programming Language', 'Vote for your favorite programming language.', 1, 1, 101, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '30 days'),
     ('b2f0e555-2df4-4e7d-b2f2-9d9585e2d7d5', 'Preferred Working Environment', 'Choose your preferred working environment.', 1, 2, 102, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '40 days'),
-    ('c3g1h666-3eg5-4f8f-c3g3-0e9695f3e8f6', 'Favorite Cloud Service', 'Select your preferred cloud service provider.', 1, 3, 103, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '50 days');
+    ('c3f1h666-3eg5-4f8f-c3g3-0e9695f3e8f6', 'Favorite Cloud Service', 'Select your preferred cloud service provider.', 1, 3, 103, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '50 days');
 
     -- NOTE: Insert sample data into answer_options table
     INSERT INTO answer_options (poll_id, ordinal, answer_text, num_of_votes)
     VALUES 
-    ('a1e9d644-1fc3-4d6c-b2f1-9d8585e1d6c4', 1, 'Python', 1),
-    ('a1e9d644-1fc3-4d6c-b2f1-9d8585e1d6c4', 2, 'JavaScript', 2),
-    ('a1e9d644-1fc3-4d6c-b2f1-9d8585e1d6c4', 3, 'Java', 3),
-    ('a1e9d644-1fc3-4d6c-b2f1-9d8585e1d6c4', 4, 'C#', 4),
+    ('a1e9d644-1fc3-4d6c-b2f1-9d8585e1d6c4', 1, 'Python', 0),
+    ('a1e9d644-1fc3-4d6c-b2f1-9d8585e1d6c4', 2, 'JavaScript', 0),
+    ('a1e9d644-1fc3-4d6c-b2f1-9d8585e1d6c4', 3, 'Java', 0),
+    ('a1e9d644-1fc3-4d6c-b2f1-9d8585e1d6c4', 4, 'C#', 0),
 
-    ('b2f0e555-2df4-4e7d-b2f2-9d9585e2d7d5', 1, 'Remote', 5),
+    ('b2f0e555-2df4-4e7d-b2f2-9d9585e2d7d5', 1, 'Remote', 0),
     ('b2f0e555-2df4-4e7d-b2f2-9d9585e2d7d5', 2, 'On-site', 0),
-    ('b2f0e555-2df4-4e7d-b2f2-9d9585e2d7d5', 3, 'Hybrid', 10),
+    ('b2f0e555-2df4-4e7d-b2f2-9d9585e2d7d5', 3, 'Hybrid', 0),
 
-    ('c3g1h666-3eg5-4f8f-c3g3-0e9695f3e8f6', 1, 'AWS', 2),
-    ('c3g1h666-3eg5-4f8f-c3g3-0e9695f3e8f6', 2, 'Google Cloud', 2),
-    ('c3g1h666-3eg5-4f8f-c3g3-0e9695f3e8f6', 3, 'Azure', 0);
+    ('c3f1h666-3eg5-4f8f-c3g3-0e9695f3e8f6', 1, 'AWS', 0),
+    ('c3f1h666-3eg5-4f8f-c3g3-0e9695f3e8f6', 2, 'Google Cloud', 0),
+    ('c3f1h666-3eg5-4f8f-c3g3-0e9695f3e8f6', 3, 'Azure', 0);
