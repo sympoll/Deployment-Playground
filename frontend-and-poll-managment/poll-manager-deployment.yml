@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: poll-manager
-        image: ghcr.io/sympoll/poll-management-service/sympoll-poll-service:latest
+        image: ghcr.io/sympoll/poll-management-service/sympoll-poll-service-test:latest
         resources:
           requests:
             memory: "256Mi"
