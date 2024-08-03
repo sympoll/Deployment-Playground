@@ -10,28 +10,28 @@ data:
         title               VARCHAR(255),
         description         TEXT,
         nof_answers_allowed INT,
-        creator_id          INT,
-        group_id            INT,
+        creator_id          UUID,
+        group_id            UUID,
         time_created        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         time_updated        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        deadline           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        deadline            TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE voting_item_options
     (
         voting_item_id    SERIAL PRIMARY KEY,
-        poll_id      UUID REFERENCES polls (poll_id),
-        ordinal      INT,
-        description  TEXT,
-        vote_count INT
+        poll_id           UUID REFERENCES polls (poll_id),
+        ordinal           INT,
+        description       TEXT,
+        vote_count        INT
     );
 
     -- NOTE: Insert sample data into polls table
     INSERT INTO polls (poll_id, title, description, nof_answers_allowed, creator_id, group_id, time_created, time_updated, deadline)
     VALUES 
-    ('051908e4-eacb-45a0-8956-a86763eada3d', 'Best Programming Language', 'Vote for your favorite programming language.', 1, 1, 101, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '30 days'),
-    ('7b0857a6-f59a-42d2-98fe-d5eef162d4d0', 'Preferred Working Environment', 'Choose your preferred working environment.', 1, 2, 102, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '40 days'),
-    ('618212e5-e9a3-427d-8ac3-0580e0223f08', 'Favorite Cloud Service', 'Select your preferred cloud service provider.', 1, 3, 103, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '50 days');
+    ('051908e4-eacb-45a0-8956-a86763eada3d', 'Best Programming Language', 'Vote for your favorite programming language.', 1, '219b3c35-f850-4fec-8cc0-01ddfd80ef11', '13f7c5f4-6291-4b54-bf8c-12969e1b8d36', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '30 days'),
+    ('7b0857a6-f59a-42d2-98fe-d5eef162d4d0', 'Preferred Working Environment', 'Choose your preferred working environment.', 1, '219b3c35-f850-4fec-8cc0-01ddfd80ef11', '7417e489-212b-48d3-bd10-904b91b3d63f', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '40 days'),
+    ('618212e5-e9a3-427d-8ac3-0580e0223f08', 'Favorite Cloud Service', 'Select your preferred cloud service provider.', 2, '729616aa-052e-4bcf-9f13-61d66db4e049', '13f7c5f4-6291-4b54-bf8c-12969e1b8d36', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '50 days');
 
     -- NOTE: Insert sample data into answer_options table
     INSERT INTO voting_item_options (poll_id, ordinal, description, vote_count)
