@@ -38,3 +38,4 @@ spec:
       - name: init-sql-volume
         configMap:
           name: init-sql-config
+
