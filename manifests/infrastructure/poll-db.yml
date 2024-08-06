@@ -15,39 +15,41 @@ spec:
         app: poll-db
     spec:
       containers:
-      - image: postgres:16.2
-        name: postgres
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        ports:
-          - containerPort: 5432
-        env:
-          - name: POSTGRES_DB
-            value: mydatabase
-          - name: POSTGRES_USER
-            value: postgres
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: POSTGRES_PASSWORD
-                name: poll-db-secrets
-        volumeMounts:
-          - mountPath: /var/lib/poll-db
-            name: poll-db-data
-          - mountPath: /docker-entrypoint-initdb.d
-            name: poll-db-init-config
+        - image: postgres:16.2
+          name: postgres
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: mydatabase
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: poll-db-secrets
+          volumeMounts:
+            - mountPath: /var/lib/poll-db
+              name: poll-db-data
+            - mountPath: /docker-entrypoint-initdb.d
+              name: poll-db-init-config
       volumes:
         - name: poll-db-data
           persistentVolumeClaim:
             claimName: poll-db-pvc
+        - name: poll-db-init-config
+          configMap:
+            name: poll-db-init-config
 
---- 
-
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -56,16 +58,15 @@ metadata:
   name: poll-db
 spec:
   ports:
-  - name: 5432-5432
-    port: 5432
-    protocol: TCP
-    targetPort: 5432
+    - name: 5432-5432
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
   selector:
     app: poll-db
   type: ClusterIP
 
 ---
-
 apiVersion: v1
 data:
   POSTGRES_PASSWORD: cG9zZ3Jlcw==
@@ -74,7 +75,6 @@ metadata:
   name: poll-db-secrets
 
 ---
-
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -84,12 +84,11 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteOnce
-  storageClassName: 'standard'
+  storageClassName: "standard"
   hostPath:
     path: /data/poll-db
 
 ---
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -97,13 +96,12 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: 'standard'
+  storageClassName: "standard"
   resources:
     requests:
       storage: 1Gi
 
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:

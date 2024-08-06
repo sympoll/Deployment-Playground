@@ -13,30 +13,29 @@ spec:
         app: poll-service
     spec:
       containers:
-      - name: poll-service
-        image: ghcr.io/sympoll/poll-service/sympoll-poll-service-test:latest
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 8082
-        env:
-          - name: SPRING_DATASOURCE_URL
-            value: "jdbc:postgresql://poll-db:5432/mydatabase"
-          - name: SPRING_DATASOURCE_USERNAME
-            value: "postgres"
-          - name: SPRING_DATASOURCE_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: POSTGRES_PASSWORD
-                name: poll-db-secrets       
+        - name: poll-service
+          image: ghcr.io/sympoll/poll-service/sympoll-poll-service-test:latest
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://poll-db:5432/mydatabase"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: poll-db-secrets
 
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -45,6 +44,6 @@ spec:
   selector:
     app: poll-service
   ports:
-  - protocol: TCP
-    port: 8082
+    - protocol: TCP
+      port: 8082
   type: ClusterIP
