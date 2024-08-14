@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: poll-service
-          image: ghcr.io/sympoll/poll-service/sympoll-poll-service-test:latest
+          image: ghcr.io/sympoll/poll-service/sympoll-poll-service:latest
           resources:
             requests:
               memory: "256Mi"
@@ -26,7 +26,7 @@ spec:
             - containerPort: 8082
           env:
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://poll-db:5432/mydatabase"
+              value: "jdbc:postgresql://poll-db:5432/polldb"
             - name: SPRING_DATASOURCE_USERNAME
               value: "postgres"
             - name: SPRING_DATASOURCE_PASSWORD

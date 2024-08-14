@@ -26,7 +26,7 @@ spec:
             - containerPort: 8085
           env:
             - name: SPRING_DATASOURCE_URL
-              value: "jdbc:postgresql://group-db:5435/mydatabase"
+              value: "jdbc:postgresql://group-db:5435/groupdb"
             - name: SPRING_DATASOURCE_USERNAME
               value: "postgres"
             - name: SPRING_DATASOURCE_PASSWORD
