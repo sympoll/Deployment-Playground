@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: group-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: group-service
+  template:
+    metadata:
+      labels:
+        app: group-service
+    spec:
+      containers:
+        - name: group-service
+          image: ghcr.io/sympoll/group-service/sympoll-group-service-test:latest
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8085
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://group-db:5435/groupdb"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: group-db-secrets
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: group-service
+spec:
+  selector:
+    app: group-service
+  ports:
+    - protocol: TCP
+      port: 8085
+  type: ClusterIP
