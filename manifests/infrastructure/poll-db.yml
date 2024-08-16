@@ -125,7 +125,6 @@ data:
     (
         voting_item_id    SERIAL PRIMARY KEY,
         poll_id           UUID REFERENCES polls (poll_id),
-        ordinal           INT,
         description       TEXT,
         vote_count        INT
     );
@@ -138,17 +137,17 @@ data:
     ('618212e5-e9a3-427d-8ac3-0580e0223f08', 'Favorite Cloud Service', 'Select your preferred cloud service provider.', 2, '729616aa-052e-4bcf-9f13-61d66db4e049', 'group3', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '50 days');
 
     -- NOTE: Insert sample data into answer_options table
-    INSERT INTO voting_item_options (poll_id, ordinal, description, vote_count)
+    INSERT INTO voting_item_options (poll_id, description, vote_count)
     VALUES 
-    ('051908e4-eacb-45a0-8956-a86763eada3d', 1, 'Python', 0),
-    ('051908e4-eacb-45a0-8956-a86763eada3d', 2, 'JavaScript', 0),
-    ('051908e4-eacb-45a0-8956-a86763eada3d', 3, 'Java', 0),
-    ('051908e4-eacb-45a0-8956-a86763eada3d', 4, 'C#', 0),
+    ('051908e4-eacb-45a0-8956-a86763eada3d', 'Python', 0),
+    ('051908e4-eacb-45a0-8956-a86763eada3d', 'JavaScript', 0),
+    ('051908e4-eacb-45a0-8956-a86763eada3d', 'Java', 0),
+    ('051908e4-eacb-45a0-8956-a86763eada3d', 'C#', 0),
 
-    ('7b0857a6-f59a-42d2-98fe-d5eef162d4d0', 1, 'Remote', 0),
-    ('7b0857a6-f59a-42d2-98fe-d5eef162d4d0', 2, 'On-site', 0),
-    ('7b0857a6-f59a-42d2-98fe-d5eef162d4d0', 3, 'Hybrid', 0),
+    ('7b0857a6-f59a-42d2-98fe-d5eef162d4d0', 'Remote', 0),
+    ('7b0857a6-f59a-42d2-98fe-d5eef162d4d0', 'On-site', 0),
+    ('7b0857a6-f59a-42d2-98fe-d5eef162d4d0', 'Hybrid', 0),
 
-    ('618212e5-e9a3-427d-8ac3-0580e0223f08', 1, 'AWS', 0),
-    ('618212e5-e9a3-427d-8ac3-0580e0223f08', 2, 'Google Cloud', 0),
-    ('618212e5-e9a3-427d-8ac3-0580e0223f08', 3, 'Azure', 0);
+    ('618212e5-e9a3-427d-8ac3-0580e0223f08', 'AWS', 0),
+    ('618212e5-e9a3-427d-8ac3-0580e0223f08', 'Google Cloud', 0),
+    ('618212e5-e9a3-427d-8ac3-0580e0223f08', 'Azure', 0);
