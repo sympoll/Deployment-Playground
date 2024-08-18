@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: vote-service
-          image: ghcr.io/sympoll/vote-service/sympoll-vote-service-test:latest
+          image: ghcr.io/sympoll/vote-service/sympoll-vote-service:latest
           resources:
             requests:
               memory: "256Mi"
