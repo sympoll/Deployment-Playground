@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-service
+  template:
+    metadata:
+      labels:
+        app: vote-service
+    spec:
+      containers:
+        - name: vote-service
+          image: ghcr.io/sympoll/vote-service/sympoll-vote-service-test:latest
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8084
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://vote-db:5434/votedb"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "postgres"
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: vote-db-secrets
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote-service
+spec:
+  selector:
+    app: vote-service
+  ports:
+    - protocol: TCP
+      port: 8084
+  type: ClusterIP

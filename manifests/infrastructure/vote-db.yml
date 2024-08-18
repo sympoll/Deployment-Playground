@@ -1,0 +1,108 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: vote-db
+  name: vote-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-db
+  template:
+    metadata:
+      labels:
+        app: vote-db
+    spec:
+      containers:
+        - image: postgres:16.2
+          name: postgres
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: votedb
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: vote-db-secrets
+          volumeMounts:
+            - mountPath: /var/lib/vote-db
+              name: vote-db-data
+            - mountPath: /docker-entrypoint-initdb.d
+              name: vote-db-init-config
+      volumes:
+        - name: vote-db-data
+          persistentVolumeClaim:
+            claimName: vote-db-pvc
+        - name: vote-db-init-config
+          configMap:
+            name: vote-db-init-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: vote-db
+  name: vote-db
+spec:
+  ports:
+    - name: 5434-5432
+      port: 5434
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    app: vote-db
+  type: ClusterIP
+
+---
+apiVersion: v1
+data:
+  POSTGRES_PASSWORD: cG9zZ3Jlcw==
+kind: Secret
+metadata:
+  name: vote-db-secrets
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: vote-db-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "standard"
+  hostPath:
+    path: /data/vote-db
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vote-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "standard"
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vote-db-init-config
