@@ -106,3 +106,13 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: vote-db-init-config
+data:
+  init.sql: |
+    -- Voting Service Schema
+      CREATE TABLE votes
+      (
+          vote_id        UUID PRIMARY KEY,
+          user_id        UUID NOT NULL,
+          voting_item_id INT  NOT NULL,
+          vote_datetime  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
