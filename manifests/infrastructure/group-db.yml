@@ -122,9 +122,25 @@ data:
 
     CREATE TABLE members
     (
-        user_id         uuid NOT NULL,
+        user_id         UUID NOT NULL,
         group_id        VARCHAR(255) REFERENCES groups(group_id) ON DELETE CASCADE NOT NULL,
         PRIMARY KEY (group_id, user_id)
+    );
+
+    CREATE TABLE roles
+    (
+        role_id SERIAL PRIMARY KEY,
+        role_name VARCHAR(255),
+        UNIQUE (role_name)
+    );
+
+    CREATE TABLE user_roles
+    (
+        user_id  UUID NOT NULL,
+        group_id VARCHAR(255) NOT NULL,
+        role_id  INT REFERENCES roles (role_id) ON DELETE CASCADE NOT NULL,
+        PRIMARY KEY (user_id, group_id, role_id),
+        FOREIGN KEY (user_id, group_id) REFERENCES members (user_id, group_id) ON DELETE CASCADE
     );
 
     -- Insert sample data into the groups table
@@ -150,3 +166,16 @@ data:
     ('823dbe18-c1ad-423e-a9f1-1c5b1931c095', 'group4'),
     ('9bc8a7db-7f14-41a3-bf7e-d0a0078cfbab', 'group5'),
     ('debfdbd5-bf68-46e2-bfc3-21d6fa4ddfe1', 'group5');
+
+    -- Insert sample data into the roles table
+    INSERT INTO roles (role_name) VALUES
+    ('Standard User'),
+    ('Group Moderator'),
+    ('Group Admin');
+
+     -- Insert sample data into the user_roles table
+    INSERT INTO user_roles (user_id, group_id, role_id) VALUES
+    ('b1f8e925-2129-473d-bc09-b3a2a331f839', 'group1', 2),
+    ('bcdbbd68-8975-41d9-bd55-4a30a9f8e5f7', 'group1', 1),
+    ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'group1', 3);
+
