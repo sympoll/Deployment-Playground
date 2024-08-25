@@ -167,12 +167,12 @@ data:
 
     -- Insert sample data into the roles table
     INSERT INTO roles (role_name) VALUES
-    ('Group Moderator'),
-    ('Group Admin');
+    ('moderator'),
+    ('admin');
 
      -- Insert sample data into the user_roles table
     INSERT INTO user_roles (user_id, group_id, role_name) VALUES
-    ('b1f8e925-2129-473d-bc09-b3a2a331f839', 'group1', 'Group Admin'),
-    ('bcdbbd68-8975-41d9-bd55-4a30a9f8e5f7', 'group1', 'Group Moderator'),
-    ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'group1', 'Group Moderator');
+    ('b1f8e925-2129-473d-bc09-b3a2a331f839', 'group1', 'admin'),
+    ('bcdbbd68-8975-41d9-bd55-4a30a9f8e5f7', 'group1', 'moderator'),
+    ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'group1', 'moderator');
 
