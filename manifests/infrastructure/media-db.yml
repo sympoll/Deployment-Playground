@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: media-db
+  name: media-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: media-db
+  template:
+    metadata:
+      labels:
+        app: media-db
+    spec:
+      containers:
+        - image: postgres:16.2
+          name: postgres
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5436
+          env:
+            - name: PGPORT
+              value: "5436"
+            - name: POSTGRES_DB
+              value: media-db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: media-db-secrets
+          volumeMounts:
+            - mountPath: /var/lib/media-db
+              name: media-db-data
+            - mountPath: /docker-entrypoint-initdb.d
+              name: media-db-init-config
+      volumes:
+        - name: media-db-data
+          persistentVolumeClaim:
+            claimName: media-db-pvc
+        - name: media-db-init-config
+          configMap:
+            name: media-db-init-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: media-db
+  name: media-db
+spec:
+  ports:
+    - name: 5436-5436
+      port: 5436
+      protocol: TCP
+      targetPort: 5436
+  selector:
+    app: media-db
+  type: ClusterIP
+
+---
+apiVersion: v1
+data:
+  POSTGRES_PASSWORD: cG9zZ3Jlcw==
+kind: Secret
+metadata:
+  name: media-db-secrets
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: media-db-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "standard"
+  hostPath:
+    path: /data/media-db
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "standard"
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: media-db-init-config
+data:
+  init.sql: |
+    -- Media Service Schema
+    CREATE TABLE images (
+        id      SERIAL PRIMARY KEY,
+        name    VARCHAR(255),
+        data    BYTEA
+    );
