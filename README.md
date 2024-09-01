@@ -1,6 +1,6 @@
-# Deployment Playground
+# Manifests
 
-This repository contains Kubernetes configurations for deploying a sample application with a frontend, API gateway, poll management service, and PostgreSQL database. These configurations are tailored for deployment in Minikube.
+This repository contains Kubernetes configurations for deployment of all Sympoll's apps and infrastructure. These configurations are tailored for deployment in Minikube.
 
 ## Prerequisites
 
