@@ -137,7 +137,7 @@ data:
         user_id  UUID NOT NULL,
         group_id VARCHAR(255) NOT NULL,
         role_name  VARCHAR(63) REFERENCES roles (role_name) ON DELETE CASCADE NOT NULL,
-        PRIMARY KEY (user_id, group_id, role_name),
+        PRIMARY KEY (user_id, group_id),
         FOREIGN KEY (user_id, group_id) REFERENCES members (user_id, group_id) ON DELETE CASCADE
     );
 
@@ -155,9 +155,8 @@ data:
     ('bcdbbd68-8975-41d9-bd55-4a30a9f8e5f7', 'group1'),
     ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'group1'),
     ('9edc3d7f-b5cb-4e8b-9a9b-3b4b4d91bf0b', 'group1'),
-    ('3fb27438-8e71-4513-95d2-7c2c18b72b4a', 'group2'),
-    ('68839b0c-7e14-4b65-a95c-873edc8f31c9', 'group2'),
-    ('e63a9f56-3d7b-4a62-bf10-77b8f45b7ed6', 'group3'),
+    ('b1f8e925-2129-473d-bc09-b3a2a331f839', 'group2'),
+    ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'group2'),
     ('c19b9b3b-d60c-46fc-97e1-3c47c00c5727', 'group3'),
     ('11c17138-839f-4189-8103-9d4031cf3765', 'group4'),
     ('3d0d216a-3bf6-4078-b0b1-3b72c4b0a4a7', 'group4'),
@@ -174,5 +173,7 @@ data:
     INSERT INTO user_roles (user_id, group_id, role_name) VALUES
     ('b1f8e925-2129-473d-bc09-b3a2a331f839', 'group1', 'Moderator'),
     ('bcdbbd68-8975-41d9-bd55-4a30a9f8e5f7', 'group1', 'Admin'),
-    ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'group1', 'Moderator');
+    ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'group1', 'Moderator'),
+    ('b1f8e925-2129-473d-bc09-b3a2a331f839', 'group2', 'Admin'),
+    ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'group2', 'Moderator');
 
