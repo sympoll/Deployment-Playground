@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: api-gateway
-          image: ghcr.io/sympoll/api-gateway-service/sympoll-api-gateway-service:latest
+          image: ghcr.io/sympoll/api-gateway-service/sympoll-api-gateway-service-test:latest
           resources:
             requests:
               memory: "256Mi"
@@ -24,6 +24,9 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 8081
+          env:
+            - name: VITE_ENABLE_AUTH
+              value: "auth-enabled" # auth-disabled | auth-enabled
 
 ---
 apiVersion: v1

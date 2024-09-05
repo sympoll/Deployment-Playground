@@ -22,8 +22,12 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
+          env:
+            - name: ENABLE_AUTH
+              value: "auth-enabled" # auth-disabled | auth-enabled
           ports:
             - containerPort: 8080
+          
 
 ---
 apiVersion: v1
