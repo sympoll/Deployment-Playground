@@ -123,7 +123,7 @@ data:
 
 
     -- Insert sample data into the users table
-    INSERT INTO users (user_id, username, password_hash, email, created_at) VALUES
+    INSERT INTO users (user_id, username, email, created_at) VALUES
     ('b1f8e925-2129-473d-bc09-b3a2a331f839', 'Roytol12', 'roytol12@gmail.com', '2024-08-14 10:00:00'),
     ('bcdbbd68-8975-41d9-bd55-4a30a9f8e5f7', 'Idansh', 'idan.sh2@icloud.com', '2024-08-14 10:05:00'),
     ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'Ronenii', 'Ronen.Glm@gmail.com', '2024-08-14 10:10:00'),

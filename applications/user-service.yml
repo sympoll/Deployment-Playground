@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: user-service
-          image: ghcr.io/sympoll/user-service/sympoll-user-service:latest
+          image: ghcr.io/sympoll/user-service/sympoll-user-service-test:latest
           resources:
             requests:
               memory: "128Mi"

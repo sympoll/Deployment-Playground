@@ -518,9 +518,9 @@ data:
           "clientId": "frontend-client",
           "name": "",
           "description": "",
-          "rootUrl": "",
+          "rootUrl": "http://auth.localhost/",
           "adminUrl": "",
-          "baseUrl": "",
+          "baseUrl": "http://localhost:8080/feed",
           "surrogateAuthRequired": false,
           "enabled": true,
           "alwaysDisplayInConsole": false,
@@ -546,7 +546,7 @@ data:
           "protocol": "openid-connect",
           "attributes": {
             "client.secret.creation.time": "1725551510",
-            "post.logout.redirect.uris": "http://localhost:8080/",
+            "post.logout.redirect.uris": "http://auth.localhost/",
             "oauth2.device.authorization.grant.enabled": "false",
             "backchannel.logout.revoke.offline.tokens": "false",
             "use.refresh.tokens": "true",
@@ -1294,14 +1294,14 @@ data:
             "subComponents": {},
             "config": {
               "allowed-protocol-mapper-types": [
-                "saml-user-property-mapper",
-                "oidc-usermodel-property-mapper",
                 "oidc-full-name-mapper",
-                "saml-role-list-mapper",
-                "oidc-address-mapper",
                 "oidc-sha256-pairwise-sub-mapper",
+                "oidc-usermodel-property-mapper",
                 "oidc-usermodel-attribute-mapper",
-                "saml-user-attribute-mapper"
+                "saml-user-attribute-mapper",
+                "saml-user-property-mapper",
+                "saml-role-list-mapper",
+                "oidc-address-mapper"
               ]
             }
           },
@@ -1313,13 +1313,13 @@ data:
             "subComponents": {},
             "config": {
               "allowed-protocol-mapper-types": [
-                "oidc-usermodel-property-mapper",
-                "oidc-address-mapper",
-                "oidc-sha256-pairwise-sub-mapper",
-                "oidc-full-name-mapper",
-                "oidc-usermodel-attribute-mapper",
-                "saml-role-list-mapper",
                 "saml-user-property-mapper",
+                "oidc-usermodel-property-mapper",
+                "oidc-usermodel-attribute-mapper",
+                "oidc-full-name-mapper",
+                "oidc-address-mapper",
+                "saml-role-list-mapper",
+                "oidc-sha256-pairwise-sub-mapper",
                 "saml-user-attribute-mapper"
               ]
             }
@@ -2081,7 +2081,7 @@ data:
         "oauth2DeviceCodeLifespan": "600",
         "parRequestUriLifespan": "60",
         "clientSessionMaxLifespan": "0",
-        "frontendUrl": "http://localhost:8080/",
+        "frontendUrl": "http://auth.localhost/",
         "acr.loa.map": "{}"
       },
       "keycloakVersion": "24.0.1",
