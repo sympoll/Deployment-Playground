@@ -198,20 +198,6 @@ data:
       "webAuthnPolicyPasswordlessAvoidSameAuthenticatorRegister": false,
       "webAuthnPolicyPasswordlessAcceptableAaguids": [],
       "webAuthnPolicyPasswordlessExtraOrigins": [],
-      "users": [
-        {
-          "id": "a6b8b3db-646e-4e0b-8f38-a8a4f0a3231a",
-          "username": "service-account-api-gateway-client",
-          "emailVerified": false,
-          "createdTimestamp": 1725455318196,
-          "enabled": true,
-          "totp": false,
-          "serviceAccountClientId": "api-gateway-client",
-          "disableableCredentialTypes": [],
-          "requiredActions": [],
-          "notBefore": 0
-        }
-      ],
       "scopeMappings": [
         {
           "clientScope": "offline_access",
@@ -372,7 +358,6 @@ data:
           "enabled": true,
           "alwaysDisplayInConsole": false,
           "clientAuthenticatorType": "client-secret",
-          "secret": "**********",
           "redirectUris": [
             "/*"
           ],
@@ -384,9 +369,9 @@ data:
           "consentRequired": false,
           "standardFlowEnabled": false,
           "implicitFlowEnabled": false,
-          "directAccessGrantsEnabled": false,
-          "serviceAccountsEnabled": true,
-          "publicClient": false,
+          "directAccessGrantsEnabled": true,
+          "serviceAccountsEnabled": false,
+          "publicClient": true,
           "frontchannelLogout": true,
           "protocol": "openid-connect",
           "attributes": {
@@ -518,20 +503,20 @@ data:
           "clientId": "frontend-client",
           "name": "",
           "description": "",
-          "rootUrl": "http://auth.localhost/",
+          "rootUrl": "",
           "adminUrl": "",
-          "baseUrl": "http://localhost:8080/feed",
+          "baseUrl": "",
           "surrogateAuthRequired": false,
           "enabled": true,
           "alwaysDisplayInConsole": false,
           "clientAuthenticatorType": "client-secret",
-          "secret": "**********",
           "redirectUris": [
             "http://localhost:8080/silent-check-sso.html",
             "http://localhost:8080/*",
             "http://auth.localhost/*"
           ],
           "webOrigins": [
+            "http://localhost:8080",
             "http://auth.localhost"
           ],
           "notBefore": 0,
@@ -541,12 +526,12 @@ data:
           "implicitFlowEnabled": false,
           "directAccessGrantsEnabled": false,
           "serviceAccountsEnabled": false,
-          "publicClient": false,
+          "publicClient": true,
           "frontchannelLogout": true,
           "protocol": "openid-connect",
           "attributes": {
             "client.secret.creation.time": "1725551510",
-            "post.logout.redirect.uris": "http://auth.localhost/",
+            "post.logout.redirect.uris": "http://localhost:8080/",
             "oauth2.device.authorization.grant.enabled": "false",
             "backchannel.logout.revoke.offline.tokens": "false",
             "use.refresh.tokens": "true",
@@ -1295,13 +1280,13 @@ data:
             "config": {
               "allowed-protocol-mapper-types": [
                 "oidc-full-name-mapper",
-                "oidc-sha256-pairwise-sub-mapper",
-                "oidc-usermodel-property-mapper",
                 "oidc-usermodel-attribute-mapper",
+                "oidc-address-mapper",
+                "oidc-usermodel-property-mapper",
+                "oidc-sha256-pairwise-sub-mapper",
                 "saml-user-attribute-mapper",
                 "saml-user-property-mapper",
-                "saml-role-list-mapper",
-                "oidc-address-mapper"
+                "saml-role-list-mapper"
               ]
             }
           },
@@ -1313,13 +1298,13 @@ data:
             "subComponents": {},
             "config": {
               "allowed-protocol-mapper-types": [
-                "saml-user-property-mapper",
+                "saml-role-list-mapper",
                 "oidc-usermodel-property-mapper",
+                "oidc-address-mapper",
+                "oidc-sha256-pairwise-sub-mapper",
                 "oidc-usermodel-attribute-mapper",
                 "oidc-full-name-mapper",
-                "oidc-address-mapper",
-                "saml-role-list-mapper",
-                "oidc-sha256-pairwise-sub-mapper",
+                "saml-user-property-mapper",
                 "saml-user-attribute-mapper"
               ]
             }
