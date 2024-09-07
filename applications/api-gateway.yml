@@ -25,8 +25,8 @@ spec:
           ports:
             - containerPort: 8081
           env:
-            - name: VITE_ENABLE_AUTH
-              value: "auth-enabled" # auth-disabled | auth-enabled
+            - name: ENABLE_AUTH
+              value: "auth-disabled" # auth-disabled | auth-enabled
 
 ---
 apiVersion: v1
