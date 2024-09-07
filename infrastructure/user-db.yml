@@ -114,7 +114,6 @@ data:
     CREATE TABLE users (
       user_id              UUID PRIMARY KEY,
       username             VARCHAR(255) UNIQUE NOT NULL,
-      password_hash        VARCHAR(255) NOT NULL,
       email                VARCHAR(255) NOT NULL,
       profile_picture_url  VARCHAR(255),
       profile_banner_url   VARCHAR(255),
@@ -124,8 +123,8 @@ data:
 
 
     -- Insert sample data into the users table
-    INSERT INTO users (user_id, username, password_hash, email, created_at) VALUES
-    ('b1f8e925-2129-473d-bc09-b3a2a331f839', 'Roytol12', '$2a$10$GhKZZiS/w./4ZTl./GxaA.Sxo1Bh5C8DeLPb7Cv0w5JgCZawTwiXi', 'roytol12@gmail.com', '2024-08-14 10:00:00'),
-    ('bcdbbd68-8975-41d9-bd55-4a30a9f8e5f7', 'Idansh', '$2a$10$ZjAPhX5lvDoYx0do1ZT6nO.pqTr82SxPb4RfKExx5Rr1txvqs/.PC', 'idan.sh2@icloud.com', '2024-08-14 10:05:00'),
-    ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'Ronenii', '$2a$10$zEIbobZs5mpM.vTXg9DQLO9vGH2wBRUXInURCNXpEMhFvdUomCd4W', 'Ronen.Glm@gmail.com', '2024-08-14 10:10:00'),
-    ('9edc3d7f-b5cb-4e8b-9a9b-3b4b4d91bf0b', 'BeBo', '$2a$10$HpCdo9sz.CJfdvHCXwi8LOk/4kZ0d8iyfYJcTbOhHfBni7zjRxEae', 'yonathanle@mta.ac.il', '2024-08-14 10:15:00');
+    INSERT INTO users (user_id, username, email, created_at) VALUES
+    ('b1f8e925-2129-473d-bc09-b3a2a331f839', 'Roytol12', 'roytol12@gmail.com', '2024-08-14 10:00:00'),
+    ('bcdbbd68-8975-41d9-bd55-4a30a9f8e5f7', 'Idansh', 'idan.sh2@icloud.com', '2024-08-14 10:05:00'),
+    ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'Ronenii', 'Ronen.Glm@gmail.com', '2024-08-14 10:10:00'),
+    ('9edc3d7f-b5cb-4e8b-9a9b-3b4b4d91bf0b', 'BeBo', 'yonathanle@mta.ac.il', '2024-08-14 10:15:00');

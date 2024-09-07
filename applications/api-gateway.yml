@@ -24,6 +24,9 @@ spec:
               cpu: "500m"
           ports:
             - containerPort: 8081
+          env:
+            - name: ENABLE_AUTH
+              value: "auth-disabled" # auth-disabled | auth-enabled
 
 ---
 apiVersion: v1
