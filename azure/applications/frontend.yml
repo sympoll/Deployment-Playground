@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  labels:
+    app: frontend
 spec:
   replicas: 1
   selector:
@@ -22,9 +24,9 @@ spec:
             limits:
               memory: "512Mi"
               cpu: "500m"
-          env:
-            - name: VITE_ENABLE_AUTH
-              value: "auth-enabled" # auth-disabled | auth-enabled
+          envFrom:
+            - configMapRef:
+                name: frontend-config
           ports:
             - containerPort: 8080
 
@@ -33,10 +35,27 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
+  labels:
+    app: frontend
 spec:
   ports:
     - protocol: TCP
       port: 8080
+      targetPort: 8080
   selector:
     app: frontend
   type: ClusterIP
+
+---
+apiVersion: v1
+data:
+  VITE_BASE_URL: http://sympoll.ddns.net
+  VITE_ENABLE_AUTH: auth-enabled
+  VITE_KEYCLOAK_URL: https://auth.sympoll.ddns.net
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-09-08T12:53:21Z"
+  name: frontend-config
+  namespace: default
+  resourceVersion: "10952"
+  uid: 5a8954a0-a007-4131-9eb4-c44493b52ffb

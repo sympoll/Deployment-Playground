@@ -15,12 +15,12 @@ spec:
       containers:
         - name: keycloak
           resources:
-              requests:
-                memory: "256Mi"
-                cpu: "250m"
-              limits:
-                memory: "512Mi"
-                cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           image: quay.io/keycloak/keycloak:24.0.1
           ports:
             - containerPort: 8080
@@ -511,13 +511,13 @@ data:
           "alwaysDisplayInConsole": false,
           "clientAuthenticatorType": "client-secret",
           "redirectUris": [
-            "http://localhost:8080/silent-check-sso.html",
-            "http://localhost:8080/*",
-            "http://auth.localhost/*"
+            "http://sympoll.ddns.net/silent-check-sso.html",
+            "http://sympoll.ddns.net/*",
+            "http://auth.sympoll.ddns.net/*"
           ],
           "webOrigins": [
-            "http://localhost:8080",
-            "http://auth.localhost"
+            "http://sympoll.ddns.net:8080",
+            "http://auth.sympoll.ddns.net"
           ],
           "notBefore": 0,
           "bearerOnly": false,
@@ -531,7 +531,7 @@ data:
           "protocol": "openid-connect",
           "attributes": {
             "client.secret.creation.time": "1725551510",
-            "post.logout.redirect.uris": "http://localhost:8080/",
+            "post.logout.redirect.uris": "http://sympoll.ddns.net/",
             "oauth2.device.authorization.grant.enabled": "false",
             "backchannel.logout.revoke.offline.tokens": "false",
             "use.refresh.tokens": "true",
@@ -2066,7 +2066,7 @@ data:
         "oauth2DeviceCodeLifespan": "600",
         "parRequestUriLifespan": "60",
         "clientSessionMaxLifespan": "0",
-        "frontendUrl": "http://auth.localhost/",
+        "frontendUrl": "http://auth.sympoll.ddns.net/",
         "acr.loa.map": "{}"
       },
       "keycloakVersion": "24.0.1",
