@@ -30,7 +30,7 @@ spec:
                 name: api-gateway
                 port:
                   number: 8081
-    - host: auth.sympoll.ddns.net
+    - host: auth-sympoll.ddns.net
       http:
         paths:
           - path: /

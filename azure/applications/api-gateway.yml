@@ -28,7 +28,7 @@ spec:
             - name: ENABLE_AUTH
               value: "auth-enabled" # auth-disabled | auth-enabled
             - name: SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI
-              value: "http://auth.sympoll.ddns.net/realms/sympoll-realm"
+              value: "http://auth-sympoll.ddns.net/realms/sympoll-realm"
 
 ---
 apiVersion: v1
