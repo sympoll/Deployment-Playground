@@ -516,7 +516,7 @@ data:
             "http://auth.sympoll.ddns.net/*"
           ],
           "webOrigins": [
-            "http://sympoll.ddns.net:8080",
+            "http://sympoll.ddns.net",
             "http://auth.sympoll.ddns.net"
           ],
           "notBefore": 0,
