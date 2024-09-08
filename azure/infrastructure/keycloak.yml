@@ -1,6 +1,65 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  labels:
+    app: keycloak-postgres
+  name: keycloak-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak-postgres
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: keycloak-postgres
+    spec:
+      containers:
+        - name: keycloak-postgres
+          image: postgres:16.2 # Updated to PostgreSQL image
+          env:
+            - name: POSTGRES_DB
+              value: keycloak
+            - name: POSTGRES_USER
+              value: keycloak
+            - name: POSTGRES_PASSWORD
+              value: password
+            - name: PGDATA
+              value: /var/lib/postgresql/data/keycloak
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: keycloak-postgres-claim0
+      restartPolicy: Always
+      volumes:
+        - name: keycloak-postgres-claim0
+          persistentVolumeClaim:
+            claimName: keycloak-postgres-claim0
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: keycloak-postgres-claim0
+  name: keycloak-postgres-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: keycloak
 spec:
   replicas: 1
@@ -27,25 +86,13 @@ spec:
           args: ["start-dev", "--import-realm"]
           env:
             - name: DB_VENDOR
-              valueFrom:
-                configMapKeyRef:
-                  key: DB_VENDOR
-                  name: keycloak-realm-config
+              value: "postgres" # Updated to use PostgreSQL
             - name: DB_ADDR
-              valueFrom:
-                configMapKeyRef:
-                  key: DB_ADDR
-                  name: keycloak-realm-config
+              value: "keycloak-postgres" # Updated address for PostgreSQL service
             - name: DB_DATABASE
-              valueFrom:
-                configMapKeyRef:
-                  key: DB_DATABASE
-                  name: keycloak-realm-config
+              value: "keycloak" # Database name for PostgreSQL
             - name: DB_USER
-              valueFrom:
-                configMapKeyRef:
-                  key: DB_USER
-                  name: keycloak-realm-config
+              value: "keycloak" # User for PostgreSQL
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -82,24 +129,24 @@ spec:
       targetPort: 8080
 ---
 apiVersion: v1
-data:
-  DB_PASSWORD: cG9zZ3Jlcw==
-  KEYCLOAK_ADMIN_PASSWORD: YWRtaW4=
 kind: Secret
 metadata:
   name: keycloak-secrets
+data:
+  DB_PASSWORD: cG9zdGdyZXM= # Updated to "postgres" base64-encoded password
+  KEYCLOAK_ADMIN_PASSWORD: YWRtaW4=
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: keycloak-realm-config
 data:
-  DB_VENDOR: "MYSQL"
-  DB_ADDR: "mysql"
+  DB_VENDOR: "postgres"
+  DB_ADDR: "keycloak-postgres"
   DB_DATABASE: "keycloak"
   DB_USER: "keycloak"
   KEYCLOAK_ADMIN: "admin"
-  keycloak-realm-import.json: |-
+  keycloak-realm-import.json: |
     {
       "id": "86d0c4eb-16be-4a74-8799-9568573d21c8",
       "realm": "sympoll-realm",

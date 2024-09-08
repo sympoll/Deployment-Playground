@@ -19,11 +19,11 @@ spec:
           name: postgres
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "250m"
+              memory: "64Mi"
+              cpu: "100m"
             limits:
-              memory: "256Mi"
-              cpu: "500m"
+              memory: "128Mi"
+              cpu: "200m"
           ports:
             - containerPort: 5435
           env:
@@ -38,8 +38,10 @@ spec:
                 secretKeyRef:
                   key: POSTGRES_PASSWORD
                   name: group-db-secrets
+            - name: PGDATA
+              value: /var/lib/postgresql/data/group
           volumeMounts:
-            - mountPath: /var/lib/group-db
+            - mountPath: /var/lib/postgresql/data
               name: group-db-data
             - mountPath: /docker-entrypoint-initdb.d
               name: group-db-init-config
@@ -60,7 +62,7 @@ metadata:
   name: group-db
 spec:
   ports:
-    - name: 5435-5435
+    - name: postgres
       port: 5435
       protocol: TCP
       targetPort: 5435
@@ -70,25 +72,12 @@ spec:
 
 ---
 apiVersion: v1
-data:
-  POSTGRES_PASSWORD: cG9zZ3Jlcw==
 kind: Secret
 metadata:
   name: group-db-secrets
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: group-db-pv
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: "standard"
-  hostPath:
-    path: /data/group-db
+type: Opaque
+data:
+  POSTGRES_PASSWORD: cG9zdGdyZXM=
 
 ---
 apiVersion: v1
@@ -98,10 +87,10 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "standard"
   resources:
     requests:
       storage: 1Gi
+  storageClassName: "standard"
 
 ---
 apiVersion: v1
@@ -116,8 +105,8 @@ data:
         group_id            VARCHAR(255) PRIMARY KEY,
         group_name          VARCHAR(255),
         description         TEXT,
-        profile_picture_url  VARCHAR(255),
-        profile_banner_url   VARCHAR(255),
+        profile_picture_url VARCHAR(255),
+        profile_banner_url  VARCHAR(255),
         creator_id          UUID,
         time_created        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );

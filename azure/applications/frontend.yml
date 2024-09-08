@@ -16,14 +16,14 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/sympoll/front-end-service/sympoll-front-end:latest
+          image: ghcr.io/sympoll/front-end-service/sympoll-front-end-test:latest
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "250m"
+              memory: "128Mi"
+              cpu: "100m"
             limits:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: "256Mi"
+              cpu: "200m"
           envFrom:
             - configMapRef:
                 name: frontend-config
@@ -54,8 +54,5 @@ data:
   VITE_KEYCLOAK_URL: https://auth.sympoll.ddns.net
 kind: ConfigMap
 metadata:
-  creationTimestamp: "2024-09-08T12:53:21Z"
   name: frontend-config
   namespace: default
-  resourceVersion: "10952"
-  uid: 5a8954a0-a007-4131-9eb4-c44493b52ffb

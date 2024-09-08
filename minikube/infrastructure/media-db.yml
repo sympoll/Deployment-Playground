@@ -19,11 +19,11 @@ spec:
           name: postgres
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "250m"
+              memory: "64Mi"
+              cpu: "100m"
             limits:
-              memory: "256Mi"
-              cpu: "500m"
+              memory: "128Mi"
+              cpu: "200m"
           ports:
             - containerPort: 5436
           env:

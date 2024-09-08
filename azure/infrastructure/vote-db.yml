@@ -19,14 +19,16 @@ spec:
           name: postgres
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "250m"
+              memory: "64Mi"
+              cpu: "100m"
             limits:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: "128Mi"
+              cpu: "200m"
           ports:
-            - containerPort: 5432
+            - containerPort: 5434
           env:
+            - name: PGPORT
+              value: "5434"
             - name: POSTGRES_DB
               value: votedb
             - name: POSTGRES_USER
@@ -36,8 +38,10 @@ spec:
                 secretKeyRef:
                   key: POSTGRES_PASSWORD
                   name: vote-db-secrets
+            - name: PGDATA
+              value: /var/lib/postgresql/data/vote
           volumeMounts:
-            - mountPath: /var/lib/vote-db
+            - mountPath: /var/lib/postgresql/data
               name: vote-db-data
             - mountPath: /docker-entrypoint-initdb.d
               name: vote-db-init-config
@@ -58,35 +62,22 @@ metadata:
   name: vote-db
 spec:
   ports:
-    - name: 5434-5432
+    - name: postgres
       port: 5434
       protocol: TCP
-      targetPort: 5432
+      targetPort: 5434
   selector:
     app: vote-db
   type: ClusterIP
 
 ---
 apiVersion: v1
-data:
-  POSTGRES_PASSWORD: cG9zZ3Jlcw==
 kind: Secret
 metadata:
   name: vote-db-secrets
-
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: vote-db-pv
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: "standard"
-  hostPath:
-    path: /data/vote-db
+type: Opaque
+data:
+  POSTGRES_PASSWORD: cG9zdGdyZXM= # "postgres" encoded in base64
 
 ---
 apiVersion: v1
@@ -96,10 +87,10 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: "standard"
   resources:
     requests:
       storage: 1Gi
+  storageClassName: "standard"
 
 ---
 apiVersion: v1
@@ -108,11 +99,10 @@ metadata:
   name: vote-db-init-config
 data:
   init.sql: |
-    -- Voting Service Schema
-      CREATE TABLE votes
-      (
-          vote_id        UUID PRIMARY KEY,
-          user_id        UUID NOT NULL,
-          voting_item_id INT  NOT NULL,
-          vote_datetime  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
+    CREATE TABLE votes
+    (
+        vote_id        UUID PRIMARY KEY,
+        user_id        UUID NOT NULL,
+        voting_item_id INT  NOT NULL,
+        vote_datetime  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );

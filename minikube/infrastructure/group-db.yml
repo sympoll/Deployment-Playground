@@ -19,11 +19,11 @@ spec:
           name: postgres
           resources:
             requests:
-              memory: "128Mi"
-              cpu: "250m"
+              memory: "64Mi"
+              cpu: "100m"
             limits:
-              memory: "256Mi"
-              cpu: "500m"
+              memory: "128Mi"
+              cpu: "200m"
           ports:
             - containerPort: 5435
           env:
@@ -178,4 +178,3 @@ data:
     ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'group1', 'Moderator'),
     ('b1f8e925-2129-473d-bc09-b3a2a331f839', 'group2', 'Admin'),
     ('ca98fcb8-28b3-4708-becd-9114c9bba4b3', 'group2', 'Moderator');
-
