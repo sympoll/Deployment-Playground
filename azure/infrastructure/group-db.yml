@@ -1,0 +1,144 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: group-db
+  name: group-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: group-db
+  template:
+    metadata:
+      labels:
+        app: group-db
+    spec:
+      containers:
+        - image: postgres:16.2
+          name: postgres
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5435
+          env:
+            - name: PGPORT
+              value: "5435"
+            - name: POSTGRES_DB
+              value: groupdb
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: group-db-secrets
+          volumeMounts:
+            - mountPath: /var/lib/group-db
+              name: group-db-data
+            - mountPath: /docker-entrypoint-initdb.d
+              name: group-db-init-config
+      volumes:
+        - name: group-db-data
+          persistentVolumeClaim:
+            claimName: group-db-pvc
+        - name: group-db-init-config
+          configMap:
+            name: group-db-init-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: group-db
+  name: group-db
+spec:
+  ports:
+    - name: 5435-5435
+      port: 5435
+      protocol: TCP
+      targetPort: 5435
+  selector:
+    app: group-db
+  type: ClusterIP
+
+---
+apiVersion: v1
+data:
+  POSTGRES_PASSWORD: cG9zZ3Jlcw==
+kind: Secret
+metadata:
+  name: group-db-secrets
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: group-db-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "standard"
+  hostPath:
+    path: /data/group-db
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: group-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "standard"
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: group-db-init-config
+data:
+  init.sql: |
+    -- Group Service Schema
+    CREATE TABLE groups
+    (
+        group_id            VARCHAR(255) PRIMARY KEY,
+        group_name          VARCHAR(255),
+        description         TEXT,
+        profile_picture_url  VARCHAR(255),
+        profile_banner_url   VARCHAR(255),
+        creator_id          UUID,
+        time_created        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE members
+    (
+        user_id         UUID NOT NULL,
+        group_id        VARCHAR(255) REFERENCES groups(group_id) ON DELETE CASCADE NOT NULL,
+        PRIMARY KEY (group_id, user_id)
+    );
+
+    CREATE TABLE roles
+    (
+        role_name VARCHAR(63) PRIMARY KEY
+    );
+
+    CREATE TABLE user_roles
+    (
+        user_id  UUID NOT NULL,
+        group_id VARCHAR(255) NOT NULL,
+        role_name  VARCHAR(63) REFERENCES roles (role_name) ON DELETE CASCADE NOT NULL,
+        PRIMARY KEY (user_id, group_id),
+        FOREIGN KEY (user_id, group_id) REFERENCES members (user_id, group_id) ON DELETE CASCADE
+    );

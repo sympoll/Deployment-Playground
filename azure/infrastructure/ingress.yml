@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://sympoll.ddns.net"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Content-Type, Authorization"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+
+spec:
+  rules:
+    - host: sympoll.ddns.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 8080
+          - path: /api(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: api-gateway
+                port:
+                  number: 8081
+    - host: auth.sympoll.ddns.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak
+                port:
+                  number: 8181

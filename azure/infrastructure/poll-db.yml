@@ -1,0 +1,130 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: poll-db
+  name: poll-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: poll-db
+  template:
+    metadata:
+      labels:
+        app: poll-db
+    spec:
+      containers:
+        - image: postgres:16.2
+          name: postgres
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: polldb
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: poll-db-secrets
+          volumeMounts:
+            - mountPath: /var/lib/poll-db
+              name: poll-db-data
+            - mountPath: /docker-entrypoint-initdb.d
+              name: poll-db-init-config
+      volumes:
+        - name: poll-db-data
+          persistentVolumeClaim:
+            claimName: poll-db-pvc
+        - name: poll-db-init-config
+          configMap:
+            name: poll-db-init-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: poll-db
+  name: poll-db
+spec:
+  ports:
+    - name: 5432-5432
+      port: 5432
+      protocol: TCP
+      targetPort: 5432
+  selector:
+    app: poll-db
+  type: ClusterIP
+
+---
+apiVersion: v1
+data:
+  POSTGRES_PASSWORD: cG9zZ3Jlcw==
+kind: Secret
+metadata:
+  name: poll-db-secrets
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: poll-db-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "standard"
+  hostPath:
+    path: /data/poll-db
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: poll-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "standard"
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: poll-db-init-config
+data:
+  init.sql: |
+    CREATE TABLE polls
+    (
+        poll_id             UUID PRIMARY KEY,
+        title               VARCHAR(255),
+        description         TEXT,
+        nof_answers_allowed INT,
+        creator_id          UUID,
+        group_id            VARCHAR(255),
+        time_created        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        time_updated        TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        deadline            TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE TABLE voting_item_options
+    (
+        voting_item_id    SERIAL PRIMARY KEY,
+        poll_id           UUID REFERENCES polls (poll_id),
+        description       TEXT,
+        vote_count        INT
+    );

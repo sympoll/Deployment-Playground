@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: user-db
+  name: user-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-db
+  template:
+    metadata:
+      labels:
+        app: user-db
+    spec:
+      containers:
+        - image: postgres:16.2
+          name: postgres
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5433
+          env:
+            - name: PGPORT
+              value: "5433"
+            - name: POSTGRES_DB
+              value: userdb
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: POSTGRES_PASSWORD
+                  name: user-db-secrets
+          volumeMounts:
+            - mountPath: /var/lib/user-db
+              name: user-db-data
+            - mountPath: /docker-entrypoint-initdb.d
+              name: user-db-init-config
+      volumes:
+        - name: user-db-data
+          persistentVolumeClaim:
+            claimName: user-db-pvc
+        - name: user-db-init-config
+          configMap:
+            name: user-db-init-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: user-db
+  name: user-db
+spec:
+  ports:
+    - name: 5433-5433
+      port: 5433
+      protocol: TCP
+      targetPort: 5433
+  selector:
+    app: user-db
+  type: ClusterIP
+
+---
+apiVersion: v1
+data:
+  POSTGRES_PASSWORD: cG9zZ3Jlcw==
+kind: Secret
+metadata:
+  name: user-db-secrets
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: user-db-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "standard"
+  hostPath:
+    path: /data/user-db
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: user-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "standard"
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: user-db-init-config
+data:
+  init.sql: |
+    -- User Management Service Schema
+    CREATE TABLE users (
+      user_id              UUID PRIMARY KEY,
+      username             VARCHAR(255) UNIQUE NOT NULL,
+      email                VARCHAR(255) NOT NULL,
+      profile_picture_url  VARCHAR(255),
+      profile_banner_url   VARCHAR(255),
+      created_at           TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );

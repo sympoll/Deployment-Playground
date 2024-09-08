@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: console
+spec:
+  selector:
+    matchLabels:
+      app: console
+  template:
+    metadata:
+      labels:
+        app: console
+    spec:
+      containers:
+      - name: console
+        image: quay.io/brochwer/console
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 9999
