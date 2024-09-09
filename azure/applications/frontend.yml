@@ -29,18 +29,6 @@ spec:
                 name: frontend-config
           ports:
             - containerPort: 8080
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /readiness
-              port: 8080
-            initialDelaySeconds: 30
-            periodSeconds: 10
 
 ---
 apiVersion: v1
