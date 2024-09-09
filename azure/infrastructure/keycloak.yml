@@ -84,6 +84,18 @@ spec:
           ports:
             - containerPort: 8080
           args: ["start-dev", "--import-realm"]
+          livenessProbe:
+            httpGet:
+              path: /auth/realms/master
+              port: 8181
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /auth/realms/master
+              port: 8181
+            initialDelaySeconds: 30
+            periodSeconds: 10
           env:
             - name: DB_VENDOR
               value: "postgres" # Updated to use PostgreSQL
