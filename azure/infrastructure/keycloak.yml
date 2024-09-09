@@ -30,11 +30,11 @@ spec:
               value: /var/lib/postgresql/data/keycloak
           resources:
             requests:
-              cpu: "250m"
-              memory: "256Mi"
+              memory: "64Mi"
+              cpu: "100m"
             limits:
-              cpu: "500m"
-              memory: "512Mi"
+              memory: "128Mi"
+              cpu: "200m"
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: keycloak-postgres-claim0
@@ -76,10 +76,10 @@ spec:
           resources:
             requests:
               memory: "256Mi"
-              cpu: "250m"
+              cpu: "200m"
             limits:
               memory: "512Mi"
-              cpu: "500m"
+              cpu: "400m"
           image: quay.io/keycloak/keycloak:24.0.1
           ports:
             - containerPort: 8080

@@ -3,21 +3,16 @@ kind: Ingress
 metadata:
   name: ingress
   annotations:
-    kubernetes.io/ingress.class: gce
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-origin: "http://sympoll.ddns.net"
-    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
-    nginx.ingress.kubernetes.io/cors-allow-headers: "Content-Type, Authorization"
-    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    kubernetes.io/ingress.class: gce # For GCP's GCE Ingress
+    # Optional: Set up additional GCE-specific annotations if needed, like static IP, SSL, etc.
 
 spec:
   rules:
     - host: sympoll.ddns.net
       http:
         paths:
-          - path: /
-            pathType: Prefix
+          - path: /*
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: frontend
@@ -33,10 +28,17 @@ spec:
     - host: auth-sympoll.ddns.net
       http:
         paths:
-          - path: /
-            pathType: Prefix
+          - path: /*
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: keycloak
                 port:
                   number: 8181
+
+  # Uncomment and configure the TLS section if using HTTPS
+  # tls:
+  # - hosts:
+  #     - sympoll.ddns.net
+  #     - auth-sympoll.ddns.net
+  #   secretName: your-tls-secret  # Ensure this secret exists in your namespace

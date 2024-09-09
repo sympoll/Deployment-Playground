@@ -17,10 +17,10 @@ spec:
           image: ghcr.io/sympoll/api-gateway-service/sympoll-api-gateway-service:latest
           resources:
             requests:
-              memory: "128Mi"
+              memory: "256Mi"
               cpu: "100m"
             limits:
-              memory: "256Mi"
+              memory: "512Mi"
               cpu: "200m"
           ports:
             - containerPort: 8081
