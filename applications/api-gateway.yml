@@ -26,7 +26,7 @@ spec:
             - containerPort: 8081
           env:
             - name: ENABLE_AUTH
-              value: "auth-enabled" # auth-disabled | auth-enabled
+              value: "auth-disabled" # auth-disabled | auth-enabled
 ---
 apiVersion: v1
 kind: Service
